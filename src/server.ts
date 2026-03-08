@@ -145,7 +145,7 @@ app.use((err: Error, _req: Request, res: Response, _next: NextFunction) => {
   res.status(500).json({ error: "Internal server error" });
 });
 
-export { app };
+export default app;
 
 if (process.env.NODE_ENV !== "test") {
   app.listen(PORT, () => {
