@@ -1,5 +1,5 @@
 import request from "supertest";
-import { app } from "../src/server";
+import app from "../src/server";
 import { UserRole, ActiveRole } from "../src/types/index";
 
 describe("Settings API", () => {

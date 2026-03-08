@@ -147,8 +147,8 @@ app.use((err: Error, _req: Request, res: Response, _next: NextFunction) => {
 
 export default app;
 
-if (process.env.NODE_ENV !== "test") {
-  app.listen(PORT, () => {
-    console.log(`✅ Settings API running on http://localhost:${PORT}`);
-  });
-}
+// if (process.env.NODE_ENV !== "test") {
+//   app.listen(PORT, () => {
+//     console.log(`✅ Settings API running on http://localhost:${PORT}`);
+//   });
+// }
