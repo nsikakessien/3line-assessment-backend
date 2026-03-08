@@ -1,6 +1,6 @@
 import express, { Request, Response, NextFunction } from "express";
 import cors from "cors";
-import { userRoles, activeRoles } from "./data.js";
+import { userRoles, activeRoles } from "./data";
 import {
   ApiError,
   ApiResponse,
