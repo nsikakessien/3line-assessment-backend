@@ -3,7 +3,6 @@ import { app } from "../src/server";
 import { UserRole, ActiveRole } from "../src/types/index";
 
 describe("Settings API", () => {
-  // ── Health ──────────────────────────────────────────────────────────────
   describe("GET /api/health", () => {
     it("returns status ok with timestamp", async () => {
       const res = await request(app).get("/api/health");
@@ -13,7 +12,6 @@ describe("Settings API", () => {
     });
   });
 
-  // ── GET /api/roles ──────────────────────────────────────────────────────
   describe("GET /api/roles", () => {
     it("returns all roles with data and total", async () => {
       const res = await request(app).get("/api/roles");
@@ -39,7 +37,7 @@ describe("Settings API", () => {
       const res = await request(app).get("/api/roles?status=Active");
       expect(res.status).toBe(200);
       (res.body.data as UserRole[]).forEach((r) =>
-        expect(r.status).toBe("Active")
+        expect(r.status).toBe("Active"),
       );
     });
 
@@ -48,7 +46,7 @@ describe("Settings API", () => {
       expect(res.status).toBe(200);
       expect(res.body.data.length).toBeGreaterThan(0);
       (res.body.data as UserRole[]).forEach((r) =>
-        expect(r.status).toBe("InActive")
+        expect(r.status).toBe("InActive"),
       );
     });
 
@@ -56,7 +54,7 @@ describe("Settings API", () => {
       const res = await request(app).get("/api/roles?type=DEFAULT");
       expect(res.status).toBe(200);
       (res.body.data as UserRole[]).forEach((r) =>
-        expect(r.type).toBe("DEFAULT")
+        expect(r.type).toBe("DEFAULT"),
       );
     });
 
@@ -64,7 +62,7 @@ describe("Settings API", () => {
       const res = await request(app).get("/api/roles?type=SYSTEM-CUSTOM");
       expect(res.status).toBe(200);
       (res.body.data as UserRole[]).forEach((r) =>
-        expect(r.type).toBe("SYSTEM-CUSTOM")
+        expect(r.type).toBe("SYSTEM-CUSTOM"),
       );
     });
 
@@ -73,7 +71,7 @@ describe("Settings API", () => {
       expect(res.status).toBe(200);
       expect(res.body.data.length).toBeGreaterThan(0);
       (res.body.data as UserRole[]).forEach((r) =>
-        expect(r.name.toLowerCase()).toContain("admin")
+        expect(r.name.toLowerCase()).toContain("admin"),
       );
     });
 
@@ -84,7 +82,6 @@ describe("Settings API", () => {
     });
   });
 
-  // ── GET /api/roles/active/list ──────────────────────────────────────────
   describe("GET /api/roles/active/list", () => {
     it("returns active roles list with correct shape", async () => {
       const res = await request(app).get("/api/roles/active/list");
@@ -99,7 +96,6 @@ describe("Settings API", () => {
     });
   });
 
-  // ── GET /api/roles/:id ──────────────────────────────────────────────────
   describe("GET /api/roles/:id", () => {
     it("returns a single role by id", async () => {
       const res = await request(app).get("/api/roles/1");
@@ -115,7 +111,6 @@ describe("Settings API", () => {
     });
   });
 
-  // ── POST /api/roles ─────────────────────────────────────────────────────
   describe("POST /api/roles", () => {
     it("creates a new role with correct defaults", async () => {
       const res = await request(app)
@@ -155,7 +150,6 @@ describe("Settings API", () => {
     });
   });
 
-  // ── PATCH /api/roles/:id ────────────────────────────────────────────────
   describe("PATCH /api/roles/:id", () => {
     it("updates a role status", async () => {
       const res = await request(app)
@@ -181,7 +175,6 @@ describe("Settings API", () => {
     });
   });
 
-  // ── DELETE /api/roles/:id ───────────────────────────────────────────────
   describe("DELETE /api/roles/:id", () => {
     it("deletes a role and returns it", async () => {
       const res = await request(app).delete("/api/roles/6");

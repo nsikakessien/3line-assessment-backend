@@ -20,65 +20,65 @@ const VALID_TYPES: RoleType[] = ["DEFAULT", "CUSTOM", "SYSTEM-CUSTOM"];
 app.use(cors());
 app.use(express.json());
 
-// ── Health ────────────────────────────────────────────────────────────────────
 app.get("/api/health", (_req: Request, res: Response) => {
   res.json({ status: "ok", timestamp: new Date().toISOString() });
 });
 
-// ── GET /api/roles ─────────────────────────────────────────────────────────
 app.get(
   "/api/roles",
-  (req: Request<{}, ApiResponse<UserRole[]>, {}, RoleListQuery>, res: Response) => {
+  (
+    req: Request<{}, ApiResponse<UserRole[]>, {}, RoleListQuery>,
+    res: Response,
+  ) => {
     const { status, type, search } = req.query;
     let filtered: UserRole[] = [...userRoles];
 
     if (status) {
       filtered = filtered.filter(
-        (r) => r.status.toLowerCase() === status.toLowerCase()
+        (r) => r.status.toLowerCase() === status.toLowerCase(),
       );
     }
     if (type) {
       filtered = filtered.filter(
-        (r) => r.type.toLowerCase() === type.toLowerCase()
+        (r) => r.type.toLowerCase() === type.toLowerCase(),
       );
     }
     if (search) {
       filtered = filtered.filter((r) =>
-        r.name.toLowerCase().includes(search.toLowerCase())
+        r.name.toLowerCase().includes(search.toLowerCase()),
       );
     }
 
     res.json({ data: filtered, total: filtered.length, page: 1 });
-  }
+  },
 );
 
-// ── GET /api/roles/active/list ─────────────────────────────────────────────
-// Must be before /:id so Express matches it first
 app.get(
   "/api/roles/active/list",
   (_req: Request, res: Response<ApiResponse<ActiveRole[]>>) => {
     res.json({ data: activeRoles });
-  }
+  },
 );
 
-// ── GET /api/roles/:id ─────────────────────────────────────────────────────
 app.get(
   "/api/roles/:id",
-  (req: Request<{ id: string }>, res: Response<ApiResponse<UserRole> | ApiError>) => {
+  (
+    req: Request<{ id: string }>,
+    res: Response<ApiResponse<UserRole> | ApiError>,
+  ) => {
     const role = userRoles.find((r) => r.id === req.params.id);
     if (!role) {
       return res.status(404).json({ error: "Role not found" });
     }
     res.json({ data: role });
-  }
+  },
 );
 
-// ── POST /api/roles ────────────────────────────────────────────────────────
 app.post(
   "/api/roles",
   (
     req: Request<{}, ApiResponse<UserRole> | ApiError, CreateRoleBody>,
-    res: Response<ApiResponse<UserRole> | ApiError>
+    res: Response<ApiResponse<UserRole> | ApiError>,
   ) => {
     const { name, type } = req.body;
 
@@ -101,15 +101,18 @@ app.post(
     };
     userRoles.push(newRole);
     res.status(201).json({ data: newRole });
-  }
+  },
 );
 
-// ── PATCH /api/roles/:id ───────────────────────────────────────────────────
 app.patch(
   "/api/roles/:id",
   (
-    req: Request<{ id: string }, ApiResponse<UserRole> | ApiError, UpdateRoleBody>,
-    res: Response<ApiResponse<UserRole> | ApiError>
+    req: Request<
+      { id: string },
+      ApiResponse<UserRole> | ApiError,
+      UpdateRoleBody
+    >,
+    res: Response<ApiResponse<UserRole> | ApiError>,
   ) => {
     const role = userRoles.find((r) => r.id === req.params.id);
     if (!role) {
@@ -119,15 +122,14 @@ app.patch(
     if (status) role.status = status;
     if (name) role.name = name;
     res.json({ data: role });
-  }
+  },
 );
 
-// ── DELETE /api/roles/:id ──────────────────────────────────────────────────
 app.delete(
   "/api/roles/:id",
   (
     req: Request<{ id: string }>,
-    res: Response<{ data: UserRole; message: string } | ApiError>
+    res: Response<{ data: UserRole; message: string } | ApiError>,
   ) => {
     const index = userRoles.findIndex((r) => r.id === req.params.id);
     if (index === -1) {
@@ -135,10 +137,9 @@ app.delete(
     }
     const [removed] = userRoles.splice(index, 1);
     res.json({ data: removed, message: "Role deleted" });
-  }
+  },
 );
 
-// ── Global error handler ───────────────────────────────────────────────────
 app.use((err: Error, _req: Request, res: Response, _next: NextFunction) => {
   console.error(err.stack);
   res.status(500).json({ error: "Internal server error" });

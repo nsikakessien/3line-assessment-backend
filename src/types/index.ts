@@ -11,7 +11,7 @@ export interface UserRole {
   id: string;
   name: string;
   type: RoleType;
-  dateCreated: string; // ISO date string YYYY-MM-DD
+  dateCreated: string;
   status: RoleStatus;
   users: RoleUser[];
 }
@@ -23,7 +23,6 @@ export interface ActiveRole {
   isDefault: boolean;
 }
 
-// Request / response shapes
 export interface CreateRoleBody {
   name: string;
   type: RoleType;
